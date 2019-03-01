@@ -1,0 +1,64 @@
+% Quiz 2
+% Équipe 3
+% David Lessard
+% Simon Trudeau 179051
+% Étienne Petetin
+
+clc; clear all;
+
+%Valider votre code avec
+y1(1)=-1e-2;    %y0=y(1)
+y2(1)=-1e-2;
+v(1)=-1.5e-2;
+a=.1;
+%Nosc=7;
+
+
+%Constante
+k=20;
+m=50e-3;
+g=9.8;
+T=2*pi*sqrt(m/k);
+
+%Erreur minimale si
+% dtmin=10^(-3.25)*T/pi;
+% dmaxmin=2.69064039e-2;
+% Errmin=(4.2e-9)*10^-2;
+
+%1
+dt=10.^(-4.75:0.25:-3)*T/pi;
+for j=1:length(dt)
+    clear y1
+    clear y2
+    %trouve y1 
+y1(1)=-1e-2;    %y0=y(1)
+y2(1)=-1e-2;
+y1(2)=y1(1)*(1-k*dt(j)^2/(2*m))+v(1)*dt(j)*(1-a*dt(j)/(2*m))-g*dt(j)^2/2;
+y2(2)=y2(1)*(1-k*dt(j)^2/(2*m))+v(1)*dt(j)*(1-a*dt(j)/(2*m))-g*dt(j)^2/2;
+t1=0:dt(j):0.6*T;
+t2=0:dt(j)/2:0.6*T;
+%pas de temps dt et trouve y2 et +
+    for i=3:length(t1)
+       y1(i) = ((4*m-2*k*dt(j)^2)*y1(i-1)+(a*dt(j)-2*m)*y1(i-2)-2*m*g*dt(j)^2)/(a*dt(j)+2*m);
+    end
+    d1max(j)=max(abs(y1*10^2+1));
+    for i=3:length(t2)
+         y2(i) = ((4*m-2*k*dt(j)^2)*y2(i-1)+(a*dt(j)-2*m)*y2(i-2)-2*m*g*dt(j)^2)/(a*dt(j)+2*m);
+    end
+    d2max(j)=max(abs(y2*10^2+1));
+    %err
+    Err(j)=abs(d1max(j)-d2max(j));
+end
+
+
+
+%ii)
+%y0 + v0*dt + dt^2*Fo/2m
+%=y0 + v0*dt  + dt^2/2m *(-ky0-mg-av0)
+%=y0(1-kdt^2/2m) + v0*dt(1-adt/2m)-gdt^2/2
+
+
+
+
+
+
